@@ -45,21 +45,10 @@ fun GardenScreen(modifier: Modifier = Modifier) {
         ) {
 
             Text(
-                text = "ARCHIVE OVERVIEW",
+                text = "My Garden",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.SemiBold
-            )
-            Text(
-                text = "My Garden",
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Box(
-                modifier = Modifier
-                    .padding(top = 4.dp)
-                    .size(width = 86.dp, height = 2.dp)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.35f))
             )
 
             Spacer(modifier = Modifier.height(28.dp))
