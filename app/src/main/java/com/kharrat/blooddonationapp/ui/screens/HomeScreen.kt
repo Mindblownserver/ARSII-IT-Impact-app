@@ -123,18 +123,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(92.dp))
             }
         }
-
-        FloatingActionButton(
-            onClick = {},
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 22.dp, bottom = 28.dp),
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Icon(imageVector = Icons.Rounded.Add, contentDescription = "Add")
-        }
     }
 }
 
@@ -224,7 +212,7 @@ private fun UrgentDonationCard(entry: UrgentDonationEntry) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Start edit
+
                 val deepRed = Color(0xFF7A0000)
                 val redOutline = Color(0xFF9B1C1C)
 
@@ -251,7 +239,6 @@ private fun UrgentDonationCard(entry: UrgentDonationEntry) {
                 ) {
                     Text(text = "Accept")
                 }
-                // End edit
             }
         }
     }
@@ -397,17 +384,22 @@ private fun InviteCard() {
                     color = Color(0xD912381A)
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                Card(
+                // start button edit
+                Button(
+                    onClick = {},
                     shape = RoundedCornerShape(999.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF1E6A2A))
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF1E6A2A),
+                        contentColor = Color.White
+                    )
                 ) {
                     Text(
                         text = "Invite Friends",
                         style = MaterialTheme.typography.labelLarge,
-                        color = Color.White,
-                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 7.dp)
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp)
                     )
                 }
+                // end button edit
             }
         }
     }
