@@ -13,6 +13,10 @@ import com.kharrat.blooddonationapp.ui.screens.SettingsScreen
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
+    notificationsEnabled: Boolean,
+    onNotificationsEnabledChange: (Boolean) -> Unit,
+    darkThemeEnabled: Boolean,
+    onDarkThemeEnabledChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -42,7 +46,12 @@ fun AppNavGraph(
         }
 
         composable(AppDestination.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(
+                notificationsEnabled = notificationsEnabled,
+                onNotificationsEnabledChange = onNotificationsEnabledChange,
+                darkThemeEnabled = darkThemeEnabled,
+                onDarkThemeEnabledChange = onDarkThemeEnabledChange
+            )
         }
     }
 }

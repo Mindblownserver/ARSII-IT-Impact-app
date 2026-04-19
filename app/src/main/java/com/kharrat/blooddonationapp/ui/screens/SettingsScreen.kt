@@ -1,6 +1,7 @@
 package com.kharrat.blooddonationapp.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,29 +21,46 @@ import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.PowerSettingsNew
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier) {
-    var notificationsEnabled by remember { mutableStateOf(true) }
+fun SettingsScreen(
+    notificationsEnabled: Boolean,
+    onNotificationsEnabledChange: (Boolean) -> Unit,
+    darkThemeEnabled: Boolean,
+    onDarkThemeEnabledChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var displayName by rememberSaveable { mutableStateOf("Elena Greenwood") }
+    var role by rememberSaveable { mutableStateOf("Chief Botanical Archivist") }
+    var password by rememberSaveable { mutableStateOf("password") }
+    var showEditProfileDialog by remember { mutableStateOf(false) }
+    var showChangePasswordDialog by remember { mutableStateOf(false) }
+    var showDeleteAccountDialog by remember { mutableStateOf(false) }
+    var statusMessage by rememberSaveable { mutableStateOf("Settings are up to date") }
 
     LazyColumn(
         modifier = modifier
@@ -58,19 +76,7 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                /*Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Rounded.Settings,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = "Digital Greenhouse",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
-                }*/
+
             }
         }
 
@@ -101,12 +107,12 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "Elena Greenwood",
+                        text = displayName,
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "Chief Botanical Archivist",
+                        text = role,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                     )
@@ -115,6 +121,12 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
                         Chip(text = "PRO MEMBER", tint = MaterialTheme.colorScheme.primaryContainer)
                         Chip(text = "LEVEL 12", tint = MaterialTheme.colorScheme.surfaceContainer)
                     }
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = statusMessage,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
             }
         }
@@ -129,11 +141,19 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
         }
 
         item {
-            SettingsActionRow(icon = Icons.Rounded.Edit, title = "Edit profile")
+            SettingsActionRow(
+                icon = Icons.Rounded.Edit,
+                title = "Edit profile",
+                onClick = { showEditProfileDialog = true }
+            )
         }
 
         item {
-            SettingsActionRow(icon = Icons.Rounded.Lock, title = "Change password")
+            SettingsActionRow(
+                icon = Icons.Rounded.Lock,
+                title = "Change password",
+                onClick = { showChangePasswordDialog = true }
+            )
         }
 
         item {
@@ -163,14 +183,21 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
                                 tint = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                text = "Notification toggle",
+                                text = "Notifications",
                                 style = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.padding(start = 10.dp)
                             )
                         }
                         Switch(
                             checked = notificationsEnabled,
-                            onCheckedChange = { notificationsEnabled = it }
+                            onCheckedChange = {
+                                onNotificationsEnabledChange(it)
+                                statusMessage = if (it) {
+                                    "Notifications are enabled"
+                                } else {
+                                    "Notifications are disabled"
+                                }
+                            }
                         )
                     }
 
@@ -181,13 +208,27 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = "Theme toggle",
+                            text = "Theme",
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(start = 2.dp)
                         )
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                            Chip(text = "Light", tint = MaterialTheme.colorScheme.primaryContainer)
-                            Chip(text = "Dark", tint = MaterialTheme.colorScheme.surfaceContainer)
+                            ThemeChoiceChip(
+                                text = "Light",
+                                selected = !darkThemeEnabled,
+                                onClick = {
+                                    onDarkThemeEnabledChange(false)
+                                    statusMessage = "Light theme enabled"
+                                }
+                            )
+                            ThemeChoiceChip(
+                                text = "Dark",
+                                selected = darkThemeEnabled,
+                                onClick = {
+                                    onDarkThemeEnabledChange(true)
+                                    statusMessage = "Dark theme enabled"
+                                }
+                            )
                         }
                     }
                 }
@@ -198,7 +239,9 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
             Card(
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF0F0)),
-                modifier = Modifier.padding(top = 8.dp)
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .clickable { showDeleteAccountDialog = true }
             ) {
                 Column(
                     modifier = Modifier
@@ -226,16 +269,71 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(84.dp))
         }
     }
+
+    if (showEditProfileDialog) {
+        EditProfileDialog(
+            initialName = displayName,
+            initialRole = role,
+            onDismiss = { showEditProfileDialog = false },
+            onConfirm = { name, updatedRole ->
+                displayName = name
+                role = updatedRole
+                statusMessage = "Profile updated"
+                showEditProfileDialog = false
+            }
+        )
+    }
+
+    if (showChangePasswordDialog) {
+        ChangePasswordDialog(
+            currentPassword = password,
+            onDismiss = { showChangePasswordDialog = false },
+            onConfirm = { newPassword ->
+                password = newPassword
+                statusMessage = "Password changed successfully"
+                showChangePasswordDialog = false
+            }
+        )
+    }
+
+    if (showDeleteAccountDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteAccountDialog = false },
+            title = { Text(text = "Delete account") },
+            text = { Text(text = "Are you sure you want to delete this account and reset app preferences?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        displayName = "Archived User"
+                        role = "No active profile"
+                        onNotificationsEnabledChange(false)
+                        onDarkThemeEnabledChange(false)
+                        statusMessage = "Account deleted locally and preferences reset"
+                        showDeleteAccountDialog = false
+                    }
+                ) {
+                    Text(text = "Accept")
+                }
+            },
+            dismissButton = {
+                OutlinedButton(onClick = { showDeleteAccountDialog = false }) {
+                    Text(text = "Decline")
+                }
+            }
+        )
+    }
 }
 
 @Composable
 private fun SettingsActionRow(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
-    title: String
+    title: String,
+    onClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        modifier = Modifier.clickable(onClick = onClick)
     ) {
         Row(
             modifier = Modifier
@@ -290,4 +388,151 @@ private fun Chip(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
         )
     }
+}
+
+@Composable
+private fun ThemeChoiceChip(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(999.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (selected) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else {
+                MaterialTheme.colorScheme.surfaceContainer
+            }
+        ),
+        modifier = Modifier.clickable(onClick = onClick)
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+        )
+    }
+}
+
+@Composable
+private fun EditProfileDialog(
+    initialName: String,
+    initialRole: String,
+    onDismiss: () -> Unit,
+    onConfirm: (String, String) -> Unit
+) {
+    var name by remember { mutableStateOf(initialName) }
+    var role by remember { mutableStateOf(initialRole) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = "Edit profile") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Name") },
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = role,
+                    onValueChange = { role = it },
+                    label = { Text("Role") },
+                    singleLine = true
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = { onConfirm(name.trim().ifEmpty { initialName }, role.trim().ifEmpty { initialRole }) }) {
+                Text(text = "Save")
+            }
+        },
+        dismissButton = {
+            OutlinedButton(onClick = onDismiss) {
+                Text(text = "Cancel")
+            }
+        }
+    )
+}
+
+@Composable
+private fun ChangePasswordDialog(
+    currentPassword: String,
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit
+) {
+    var oldPassword by remember { mutableStateOf("") }
+    var newPassword by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = "Change password") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                OutlinedTextField(
+                    value = oldPassword,
+                    onValueChange = { oldPassword = it },
+                    label = { Text("Current password") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = newPassword,
+                    onValueChange = { newPassword = it },
+                    label = { Text("New password") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = confirmPassword,
+                    onValueChange = { confirmPassword = it },
+                    label = { Text("Confirm password") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    singleLine = true
+                )
+                if (error.isNotEmpty()) {
+                    Text(
+                        text = error,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    when {
+                        oldPassword != currentPassword -> {
+                            error = "Current password is incorrect"
+                        }
+
+                        newPassword.length < 6 -> {
+                            error = "New password must contain at least 6 characters"
+                        }
+
+                        newPassword != confirmPassword -> {
+                            error = "Passwords do not match"
+                        }
+
+                        else -> {
+                            onConfirm(newPassword)
+                        }
+                    }
+                }
+            ) {
+                Text(text = "Save")
+            }
+        },
+        dismissButton = {
+            OutlinedButton(onClick = onDismiss) {
+                Text(text = "Cancel")
+            }
+        }
+    )
 }

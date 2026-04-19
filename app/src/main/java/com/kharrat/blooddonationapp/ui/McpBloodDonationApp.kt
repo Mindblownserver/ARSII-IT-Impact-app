@@ -35,7 +35,12 @@ import com.kharrat.blooddonationapp.ui.navigation.AppNavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun McpBloodDonationApp() {
+fun McpBloodDonationApp(
+    notificationsEnabled: Boolean,
+    onNotificationsEnabledChange: (Boolean) -> Unit,
+    darkThemeEnabled: Boolean,
+    onDarkThemeEnabledChange: (Boolean) -> Unit
+) {
     val context = LocalContext.current
     val sharedPreferences = remember {
         context.getSharedPreferences("mcp_blood_donation_prefs", Context.MODE_PRIVATE)
@@ -128,7 +133,11 @@ fun McpBloodDonationApp() {
     ) { innerPadding ->
         AppNavGraph(
             navController = navController,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            notificationsEnabled = notificationsEnabled,
+            onNotificationsEnabledChange = onNotificationsEnabledChange,
+            darkThemeEnabled = darkThemeEnabled,
+            onDarkThemeEnabledChange = onDarkThemeEnabledChange
         )
     }
 
