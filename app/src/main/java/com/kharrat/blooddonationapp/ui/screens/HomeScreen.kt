@@ -1,5 +1,6 @@
 package com.kharrat.blooddonationapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,6 +37,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
 
 private data class DonationEntry(
     val bloodGroup: String,
@@ -46,8 +49,27 @@ private data class DonationEntry(
     val tint: Color
 )
 
+private data class UrgentDonationEntry(
+    val hospital: String,
+    val address: String,
+    val tint: Color
+)
+
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
+    val urgentDonations = listOf(
+        UrgentDonationEntry(
+            hospital = "Emergency Trauma Center",
+            address = "14 Rapid Care Ave, Midtown",
+            tint = Color(0xFFFFEEEE)
+        ),
+        UrgentDonationEntry(
+            hospital = "St. Mercy Hospital",
+            address = "98 Unity Blvd, Downtown",
+            tint = Color(0xFFFFF2F2)
+        )
+    )
+
     val donations = listOf(
         DonationEntry("BLOOD", "Oct 24, 2023", "City General Hospital", "123 Health St, Metropolitan", "450ml", Color(0xFFFFF1F1)),
         DonationEntry("PLASMA", "Sep 12, 2023", "Central Wellness Center", "455 Medical Plaza, Uptown", "600ml", Color(0xFFFFF8EA)),
@@ -64,11 +86,11 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         ) {
             item {
                 Spacer(modifier = Modifier.height(8.dp))
-                HomeHeader()
+                //HomeHeader()
             }
 
             item {
-                ImpactCard()
+                UrgentCardList(entries = urgentDonations)
             }
 
             item {
@@ -112,6 +134,125 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             shape = RoundedCornerShape(16.dp)
         ) {
             Icon(imageVector = Icons.Rounded.Add, contentDescription = "Add")
+        }
+    }
+}
+
+@Composable
+private fun UrgentCardList(entries: List<UrgentDonationEntry>) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 2.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Urgent Requests",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+
+        entries.forEach { entry ->
+            UrgentDonationCard(entry = entry)
+        }
+    }
+}
+
+@Composable
+private fun UrgentDonationCard(entry: UrgentDonationEntry) {
+    Card(
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(containerColor = entry.tint)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(28.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.surface),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.VolunteerActivism,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = entry.hospital,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Row(
+                modifier = Modifier.padding(top = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.LocationOn,
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp),
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                )
+                Text(
+                    text = entry.address,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Start edit
+                val deepRed = Color(0xFF7A0000)
+                val redOutline = Color(0xFF9B1C1C)
+
+                OutlinedButton(onClick = {
+                    Log.d("Home", "ignored call")
+                },
+                    shape = RoundedCornerShape(12.dp),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, redOutline),
+                    colors = androidx.compose.material3.ButtonDefaults.outlinedButtonColors(
+                        contentColor = redOutline
+                    )
+                ) {
+                    Text(text = "Ignore")
+                }
+
+                Button(onClick = {
+                    Log.d("Home", "ignored call")
+                },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                        containerColor = deepRed,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Accept")
+                }
+                // End edit
+            }
         }
     }
 }
@@ -170,36 +311,6 @@ private fun HomeHeader() {
     }
 }
 
-@Composable
-private fun ImpactCard() {
-    Card(
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(18.dp)
-        ) {
-            Text(
-                text = "YOUR IMPACT",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
-            )
-            Text(
-                text = "3 Lives Saved",
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                StatBlock(title = "LAST DONATION", value = "Oct 24,\n2023")
-                StatBlock(title = "NEXT ELIGIBLE", value = "Dec 19,\n2023")
-            }
-        }
-    }
-}
 
 @Composable
 private fun RowScope.StatBlock(title: String, value: String) {
