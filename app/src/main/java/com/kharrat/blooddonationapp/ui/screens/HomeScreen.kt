@@ -258,61 +258,6 @@ private fun UrgentDonationCard(entry: UrgentDonationEntry) {
 }
 
 @Composable
-private fun HomeHeader() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier
-                    .size(24.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.VolunteerActivism,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(14.dp)
-                )
-            }
-            Spacer(modifier = Modifier.size(8.dp))
-            Column {
-                Text(
-                    text = "Tabaralii",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Text(
-                    text = "LIFE FLOWS THROUGH US",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.65f)
-                )
-            }
-        }
-
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Icon(
-                imageVector = Icons.Rounded.Notifications,
-                contentDescription = "Notifications",
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
-            )
-            Icon(
-                imageVector = Icons.Rounded.Person,
-                contentDescription = "Profile",
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
-            )
-        }
-    }
-}
-
-
-@Composable
 private fun RowScope.StatBlock(title: String, value: String) {
     Card(
         modifier = Modifier.weight(1f),

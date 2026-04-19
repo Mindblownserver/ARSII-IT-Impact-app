@@ -28,20 +28,23 @@ fun McpBloodDonationApp() {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
     val bottomBarItems = AppDestination.bottomBarItems
+    val showTopBar = currentRoute != AppDestination.Login.route
     val showBottomBar = bottomBarItems.any { item -> item.route == currentRoute }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text("Top app bar")
-                }
-            )
+            if (showTopBar) {
+                TopAppBar(
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.background,
+                        titleContentColor = MaterialTheme.colorScheme.primary,
+                    ),
+                    title = {
+                        Text("FidaaTUN")
+                    }
+                )
+            }
         },
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
