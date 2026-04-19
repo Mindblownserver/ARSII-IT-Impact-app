@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.kharrat.blooddonationapp.ui.theme.AppThemeExtras
 
 @Composable
 fun SettingsScreen(
@@ -54,6 +55,7 @@ fun SettingsScreen(
     onDarkThemeEnabledChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val extras = AppThemeExtras.colors
     var displayName by rememberSaveable { mutableStateOf("Elena Greenwood") }
     var password by rememberSaveable { mutableStateOf("password") }
     var showEditProfileDialog by remember { mutableStateOf(false) }
@@ -110,11 +112,7 @@ fun SettingsScreen(
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Chip(text = "PRO MEMBER", tint = MaterialTheme.colorScheme.primaryContainer)
-                        Chip(text = "LEVEL 12", tint = MaterialTheme.colorScheme.surfaceContainer)
-                    }
+
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = statusMessage,
@@ -232,7 +230,7 @@ fun SettingsScreen(
         item {
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF0F0)),
+                colors = CardDefaults.cardColors(containerColor = extras.settingsDangerContainer),
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .clickable { showDeleteAccountDialog = true }

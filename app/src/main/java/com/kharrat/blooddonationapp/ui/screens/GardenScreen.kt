@@ -30,12 +30,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kharrat.blooddonationapp.ui.theme.AppThemeExtras
 import kotlin.math.min
 
 private interface TreeGrowthState {
@@ -105,7 +104,7 @@ fun GardenScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
-
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -182,10 +181,12 @@ private fun LowPolyTreeCanvas(
     state: TreeGrowthState,
     modifier: Modifier = Modifier
 ) {
+    val extras = AppThemeExtras.colors
+
     Card(
         modifier = modifier,
         shape = androidx.compose.foundation.shape.RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF7FBF4)),
+        colors = CardDefaults.cardColors(containerColor = extras.treeCanvasContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Canvas(
@@ -193,19 +194,19 @@ private fun LowPolyTreeCanvas(
                 .fillMaxSize()
                 .padding(12.dp)
         ) {
-            drawGround()
+            drawGround(extras)
             when (state.stageIndex) {
-                1 -> drawStagePlanted()
-                2 -> drawStageSapling()
-                3 -> drawStageYoungTree()
-                else -> drawStageFullTree()
+                1 -> drawStagePlanted(extras)
+                2 -> drawStageSapling(extras)
+                3 -> drawStageYoungTree(extras)
+                else -> drawStageFullTree(extras)
             }
-            drawProgressPips(state.progress)
+            drawProgressPips(state.progress, extras)
         }
     }
 }
 
-private fun DrawScope.drawGround() {
+private fun DrawScope.drawGround(extras: com.kharrat.blooddonationapp.ui.theme.AppExtraColors) {
     val groundTop = size.height * 0.72f
     val ground = Path().apply {
         moveTo(0f, groundTop)
@@ -217,15 +218,15 @@ private fun DrawScope.drawGround() {
         close()
     }
 
-    drawPath(path = ground, color = Color(0xFFCDE5B7))
+    drawPath(path = ground, color = extras.treeGroundTop)
     drawRect(
-        color = Color(0xFFDCEFCC),
+        color = extras.treeGroundBottom,
         topLeft = Offset(0f, groundTop + 6f),
         size = Size(size.width, size.height - groundTop)
     )
 }
 
-private fun DrawScope.drawStagePlanted() {
+private fun DrawScope.drawStagePlanted(extras: com.kharrat.blooddonationapp.ui.theme.AppExtraColors) {
     val centerX = size.width * 0.5f
     val baseY = size.height * 0.72f
 
@@ -236,7 +237,7 @@ private fun DrawScope.drawStagePlanted() {
         lineTo(centerX - 58f, baseY + 30f)
         close()
     }
-    drawPath(soil, Color(0xFF8D623A))
+    drawPath(soil, extras.treeSoil)
 
     val sprout = Path().apply {
         moveTo(centerX, baseY + 6f)
@@ -244,7 +245,7 @@ private fun DrawScope.drawStagePlanted() {
         lineTo(centerX + 16f, baseY + 6f)
         close()
     }
-    drawPath(sprout, Color(0xFF63A85E))
+    drawPath(sprout, extras.treeSproutA)
 
     val sprout2 = Path().apply {
         moveTo(centerX - 2f, baseY + 4f)
@@ -252,15 +253,15 @@ private fun DrawScope.drawStagePlanted() {
         lineTo(centerX - 20f, baseY + 4f)
         close()
     }
-    drawPath(sprout2, Color(0xFF6CB668))
+    drawPath(sprout2, extras.treeSproutB)
 }
 
-private fun DrawScope.drawStageSapling() {
+private fun DrawScope.drawStageSapling(extras: com.kharrat.blooddonationapp.ui.theme.AppExtraColors) {
     val centerX = size.width * 0.5f
     val baseY = size.height * 0.72f
 
     drawRect(
-        color = Color(0xFF8A5A33),
+        color = extras.treeTrunkSmall,
         topLeft = Offset(centerX - 9f, baseY - 68f),
         size = Size(18f, 74f)
     )
@@ -271,7 +272,7 @@ private fun DrawScope.drawStageSapling() {
         lineTo(centerX + 40f, baseY - 66f)
         close()
     }
-    drawPath(crown1, Color(0xFF5EAB58))
+    drawPath(crown1, extras.treeLeafA)
 
     val crown2 = Path().apply {
         moveTo(centerX + 5f, baseY - 114f)
@@ -279,15 +280,15 @@ private fun DrawScope.drawStageSapling() {
         lineTo(centerX + 34f, baseY - 82f)
         close()
     }
-    drawPath(crown2, Color(0xFF7BC273))
+    drawPath(crown2, extras.treeLeafB)
 }
 
-private fun DrawScope.drawStageYoungTree() {
+private fun DrawScope.drawStageYoungTree(extras: com.kharrat.blooddonationapp.ui.theme.AppExtraColors) {
     val centerX = size.width * 0.5f
     val baseY = size.height * 0.72f
 
     drawRect(
-        color = Color(0xFF7A4D2D),
+        color = extras.treeTrunkMedium,
         topLeft = Offset(centerX - 14f, baseY - 112f),
         size = Size(28f, 118f)
     )
@@ -298,7 +299,7 @@ private fun DrawScope.drawStageYoungTree() {
         lineTo(centerX + 66f, baseY - 106f)
         close()
     }
-    drawPath(crownA, Color(0xFF4F9C4A))
+    drawPath(crownA, extras.treeLeafC)
 
     val crownB = Path().apply {
         moveTo(centerX - 42f, baseY - 158f)
@@ -306,7 +307,7 @@ private fun DrawScope.drawStageYoungTree() {
         lineTo(centerX - 22f, baseY - 94f)
         close()
     }
-    drawPath(crownB, Color(0xFF67AF63))
+    drawPath(crownB, extras.treeLeafA)
 
     val crownC = Path().apply {
         moveTo(centerX + 50f, baseY - 164f)
@@ -314,16 +315,16 @@ private fun DrawScope.drawStageYoungTree() {
         lineTo(centerX + 96f, baseY - 94f)
         close()
     }
-    drawPath(crownC, Color(0xFF79BF74))
+    drawPath(crownC, extras.treeLeafB)
 }
 
-private fun DrawScope.drawStageFullTree() {
+private fun DrawScope.drawStageFullTree(extras: com.kharrat.blooddonationapp.ui.theme.AppExtraColors) {
     val centerX = size.width * 0.5f
     val baseY = size.height * 0.72f
     val scale = min(size.width / 360f, size.height / 520f)
 
     drawRect(
-        color = Color(0xFF6E4529),
+        color = extras.treeTrunkLarge,
         topLeft = Offset(centerX - 18f * scale, baseY - 154f * scale),
         size = Size(36f * scale, 160f * scale)
     )
@@ -334,7 +335,7 @@ private fun DrawScope.drawStageFullTree() {
         lineTo(centerX + 102f * scale, baseY - 146f * scale)
         close()
     }
-    drawPath(poly1, Color(0xFF418C3E))
+    drawPath(poly1, extras.treeLeafC)
 
     val poly2 = Path().apply {
         moveTo(centerX - 84f * scale, baseY - 210f * scale)
@@ -342,7 +343,7 @@ private fun DrawScope.drawStageFullTree() {
         lineTo(centerX - 48f * scale, baseY - 116f * scale)
         close()
     }
-    drawPath(poly2, Color(0xFF5BA757))
+    drawPath(poly2, extras.treeLeafA)
 
     val poly3 = Path().apply {
         moveTo(centerX + 96f * scale, baseY - 214f * scale)
@@ -350,7 +351,7 @@ private fun DrawScope.drawStageFullTree() {
         lineTo(centerX + 160f * scale, baseY - 112f * scale)
         close()
     }
-    drawPath(poly3, Color(0xFF6DB969))
+    drawPath(poly3, extras.treeLeafB)
 
     val poly4 = Path().apply {
         moveTo(centerX + 6f * scale, baseY - 248f * scale)
@@ -358,10 +359,10 @@ private fun DrawScope.drawStageFullTree() {
         lineTo(centerX + 58f * scale, baseY - 192f * scale)
         close()
     }
-    drawPath(poly4, Color(0xFF7FC77B))
+    drawPath(poly4, extras.treeLeafD)
 }
 
-private fun DrawScope.drawProgressPips(progress: Float) {
+private fun DrawScope.drawProgressPips(progress: Float, extras: com.kharrat.blooddonationapp.ui.theme.AppExtraColors) {
     val totalPips = 4
     val active = (progress * totalPips).toInt().coerceIn(0, totalPips)
     val startX = size.width * 0.5f - 40f
@@ -369,7 +370,7 @@ private fun DrawScope.drawProgressPips(progress: Float) {
 
     repeat(totalPips) { index ->
         drawCircle(
-            color = if (index < active) Color(0xFF2E7D32) else Color(0xFFCCD8C8),
+            color = if (index < active) extras.treeProgressActive else extras.treeProgressInactive,
             radius = 6f,
             center = Offset(startX + index * 26f, y)
         )

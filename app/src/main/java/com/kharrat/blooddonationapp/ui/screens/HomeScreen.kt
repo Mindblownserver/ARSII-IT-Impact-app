@@ -1,11 +1,13 @@
 package com.kharrat.blooddonationapp.ui.screens
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,16 +19,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.LocationOn
-import androidx.compose.material.icons.rounded.Notifications
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.VolunteerActivism
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,9 +37,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedButton
+import com.kharrat.blooddonationapp.ui.theme.AppThemeExtras
 
 private data class DonationEntry(
     val bloodGroup: String,
@@ -56,23 +55,43 @@ private data class UrgentDonationEntry(
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
+    val extras = AppThemeExtras.colors
+
     val urgentDonations = listOf(
         UrgentDonationEntry(
             hospital = "Emergency Trauma Center",
             address = "14 Rapid Care Ave, Midtown",
-            tint = Color(0xFFFFEEEE)
+            tint = extras.urgentCardPrimary
         ),
         UrgentDonationEntry(
             hospital = "St. Mercy Hospital",
             address = "98 Unity Blvd, Downtown",
-            tint = Color(0xFFFFF2F2)
+            tint = extras.urgentCardSecondary
         )
     )
 
     val donations = listOf(
-        DonationEntry("BLOOD", "Oct 24, 2023", "City General Hospital", "123 Health St, Metropolitan", Color(0xFFFFF1F1)),
-        DonationEntry("PLASMA", "Sep 12, 2023", "Central Wellness Center", "455 Medical Plaza, Uptown", Color(0xFFFFF8EA)),
-        DonationEntry("BLOOD", "Aug 05, 2023", "Red Cross HQ", "78 Unity Square, Downtown", Color(0xFFFFF1F1))
+        DonationEntry(
+            bloodGroup = "BLOOD",
+            date = "Oct 24, 2023",
+            hospital = "City General Hospital",
+            address = "123 Health St, Metropolitan",
+            tint = extras.donationBloodCard
+        ),
+        DonationEntry(
+            bloodGroup = "PLASMA",
+            date = "Sep 12, 2023",
+            hospital = "Central Wellness Center",
+            address = "455 Medical Plaza, Uptown",
+            tint = extras.donationPlasmaCard
+        ),
+        DonationEntry(
+            bloodGroup = "BLOOD",
+            date = "Aug 05, 2023",
+            hospital = "Red Cross HQ",
+            address = "78 Unity Square, Downtown",
+            tint = extras.donationBloodCard
+        )
     )
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -83,10 +102,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 .padding(horizontal = 18.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            item {
-                Spacer(modifier = Modifier.height(8.dp))
-                //HomeHeader()
-            }
+            item { Spacer(modifier = Modifier.height(8.dp)) }
 
             item {
                 UrgentCardList(entries = urgentDonations)
@@ -150,6 +166,8 @@ private fun UrgentCardList(entries: List<UrgentDonationEntry>) {
 
 @Composable
 private fun UrgentDonationCard(entry: UrgentDonationEntry) {
+    val extras = AppThemeExtras.colors
+
     Card(
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(containerColor = entry.tint)
@@ -211,29 +229,23 @@ private fun UrgentDonationCard(entry: UrgentDonationEntry) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-                val deepRed = Color(0xFF7A0000)
-                val redOutline = Color(0xFF9B1C1C)
-
-                OutlinedButton(onClick = {
-                    Log.d("Home", "ignored call")
-                },
+                OutlinedButton(
+                    onClick = { Log.d("Home", "ignored call") },
                     shape = RoundedCornerShape(12.dp),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, redOutline),
-                    colors = androidx.compose.material3.ButtonDefaults.outlinedButtonColors(
-                        contentColor = redOutline
+                    border = BorderStroke(1.dp, extras.urgentActionOutline),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = extras.urgentActionOutline
                     )
                 ) {
                     Text(text = "Ignore")
                 }
 
-                Button(onClick = {
-                    Log.d("Home", "ignored call")
-                },
+                Button(
+                    onClick = { Log.d("Home", "accepted call") },
                     shape = RoundedCornerShape(12.dp),
-                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                        containerColor = deepRed,
-                        contentColor = Color.White
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = extras.urgentActionPrimary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
                     Text(text = "Accept")
@@ -245,21 +257,23 @@ private fun UrgentDonationCard(entry: UrgentDonationEntry) {
 
 @Composable
 private fun RowScope.StatBlock(title: String, value: String) {
+    val extras = AppThemeExtras.colors
+
     Card(
         modifier = Modifier.weight(1f),
         shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x1CFFFFFF))
+        colors = CardDefaults.cardColors(containerColor = extras.statCardOverlay)
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.labelMedium,
-                color = Color.White.copy(alpha = 0.85f)
+                color = extras.statCardOnOverlay.copy(alpha = 0.85f)
             )
             Text(
                 text = value,
                 style = MaterialTheme.typography.titleMedium,
-                color = Color.White,
+                color = extras.statCardOnOverlay,
                 fontWeight = FontWeight.SemiBold
             )
         }
@@ -340,9 +354,11 @@ private fun DonationCard(entry: DonationEntry) {
 
 @Composable
 private fun InviteCard() {
+    val extras = AppThemeExtras.colors
+
     Card(
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
     ) {
         Box(
             modifier = Modifier
@@ -350,9 +366,9 @@ private fun InviteCard() {
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(
-                            Color(0xFFBDDFAE),
-                            Color(0xFF9CC784),
-                            Color(0xFF83B36D)
+                            extras.inviteGradientStart,
+                            extras.inviteGradientMiddle,
+                            extras.inviteGradientEnd
                         )
                     ),
                     shape = RoundedCornerShape(20.dp)
@@ -363,22 +379,21 @@ private fun InviteCard() {
                 Text(
                     text = "Grow the network,\nsave a life.",
                     style = MaterialTheme.typography.headlineMedium,
-                    color = Color(0xFF12381A)
+                    color = extras.inviteText
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Invite 3 friends to join Tabaralii and unlock premium perks.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xD912381A)
+                    color = extras.inviteText.copy(alpha = 0.86f)
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                // start button edit
                 Button(
                     onClick = {},
                     shape = RoundedCornerShape(999.dp),
-                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF1E6A2A),
-                        contentColor = Color.White
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = extras.inviteButtonContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
                     Text(
@@ -387,7 +402,6 @@ private fun InviteCard() {
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp)
                     )
                 }
-                // end button edit
             }
         }
     }

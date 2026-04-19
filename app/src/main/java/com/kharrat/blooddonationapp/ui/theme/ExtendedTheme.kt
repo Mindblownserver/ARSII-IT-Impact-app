@@ -1,0 +1,126 @@
+package com.kharrat.blooddonationapp.ui.theme
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
+
+data class AppExtraColors(
+    val urgentCardPrimary: Color,
+    val urgentCardSecondary: Color,
+    val donationBloodCard: Color,
+    val donationPlasmaCard: Color,
+    val urgentActionPrimary: Color,
+    val urgentActionOutline: Color,
+    val inviteGradientStart: Color,
+    val inviteGradientMiddle: Color,
+    val inviteGradientEnd: Color,
+    val inviteText: Color,
+    val inviteButtonContainer: Color,
+    val loginGradientStart: Color,
+    val loginGradientEnd: Color,
+    val loginOrbColor: Color,
+    val loginOrbFade: Color,
+    val loginCardContainer: Color,
+    val settingsDangerContainer: Color,
+    val treeCanvasContainer: Color,
+    val treeGroundTop: Color,
+    val treeGroundBottom: Color,
+    val treeSoil: Color,
+    val treeSproutA: Color,
+    val treeSproutB: Color,
+    val treeTrunkSmall: Color,
+    val treeTrunkMedium: Color,
+    val treeTrunkLarge: Color,
+    val treeLeafA: Color,
+    val treeLeafB: Color,
+    val treeLeafC: Color,
+    val treeLeafD: Color,
+    val treeProgressActive: Color,
+    val treeProgressInactive: Color,
+    val statCardOverlay: Color,
+    val statCardOnOverlay: Color,
+)
+
+val LightAppExtraColors = AppExtraColors(
+    urgentCardPrimary = Color(0xFFFFEEEE),
+    urgentCardSecondary = Color(0xFFFFF2F2),
+    donationBloodCard = Color(0xFFFFF1F1),
+    donationPlasmaCard = Color(0xFFFFF8EA),
+    urgentActionPrimary = Color(0xFF7A0000),
+    urgentActionOutline = Color(0xFF9B1C1C),
+    inviteGradientStart = Color(0xFFBDDFAE),
+    inviteGradientMiddle = Color(0xFF9CC784),
+    inviteGradientEnd = Color(0xFF83B36D),
+    inviteText = Color(0xFF12381A),
+    inviteButtonContainer = Color(0xFF1E6A2A),
+    loginGradientStart = Color(0xFFEAF4E8),
+    loginGradientEnd = Color(0xFFF7F8F7),
+    loginOrbColor = Color(0xAA9CC783),
+    loginOrbFade = Color.Transparent,
+    loginCardContainer = Color(0xF8FFFFFF),
+    settingsDangerContainer = Color(0xFFFFF0F0),
+    treeCanvasContainer = Color(0xFFF7FBF4),
+    treeGroundTop = Color(0xFFCDE5B7),
+    treeGroundBottom = Color(0xFFDCEFCC),
+    treeSoil = Color(0xFF8D623A),
+    treeSproutA = Color(0xFF63A85E),
+    treeSproutB = Color(0xFF6CB668),
+    treeTrunkSmall = Color(0xFF8A5A33),
+    treeTrunkMedium = Color(0xFF7A4D2D),
+    treeTrunkLarge = Color(0xFF6E4529),
+    treeLeafA = Color(0xFF5EAB58),
+    treeLeafB = Color(0xFF7BC273),
+    treeLeafC = Color(0xFF4F9C4A),
+    treeLeafD = Color(0xFF79BF74),
+    treeProgressActive = Color(0xFF2E7D32),
+    treeProgressInactive = Color(0xFFCCD8C8),
+    statCardOverlay = Color(0x1CFFFFFF),
+    statCardOnOverlay = Color(0xFFFFFFFF),
+)
+
+val DarkAppExtraColors = AppExtraColors(
+    urgentCardPrimary = Color(0xFF4F2F2F),
+    urgentCardSecondary = Color(0xFF3E2B2B),
+    donationBloodCard = Color(0xFF463232),
+    donationPlasmaCard = Color(0xFF3B392A),
+    urgentActionPrimary = Color(0xFFFFB4AB),
+    urgentActionOutline = Color(0xFFFFB4AB),
+    inviteGradientStart = Color(0xFF24442A),
+    inviteGradientMiddle = Color(0xFF2E5235),
+    inviteGradientEnd = Color(0xFF365F40),
+    inviteText = Color(0xFFE4EEE2),
+    inviteButtonContainer = Color(0xFF88D982),
+    loginGradientStart = Color(0xFF0F1812),
+    loginGradientEnd = Color(0xFF121C15),
+    loginOrbColor = Color(0x883A6D40),
+    loginOrbFade = Color.Transparent,
+    loginCardContainer = Color(0xFF1A261E),
+    settingsDangerContainer = Color(0xFF3A2A2A),
+    treeCanvasContainer = Color(0xFF1A281F),
+    treeGroundTop = Color(0xFF425B3E),
+    treeGroundBottom = Color(0xFF526A4D),
+    treeSoil = Color(0xFF6C4A2E),
+    treeSproutA = Color(0xFF7EC97A),
+    treeSproutB = Color(0xFF8CD688),
+    treeTrunkSmall = Color(0xFF72492B),
+    treeTrunkMedium = Color(0xFF6A4328),
+    treeTrunkLarge = Color(0xFF613E25),
+    treeLeafA = Color(0xFF76C271),
+    treeLeafB = Color(0xFF92DA8E),
+    treeLeafC = Color(0xFF68B663),
+    treeLeafD = Color(0xFF9BE097),
+    treeProgressActive = Color(0xFF88D982),
+    treeProgressInactive = Color(0xFF4E5E50),
+    statCardOverlay = Color(0x334E5E50),
+    statCardOnOverlay = Color(0xFFE4EEE2),
+)
+
+val LocalAppExtraColors = staticCompositionLocalOf { LightAppExtraColors }
+
+object AppThemeExtras {
+    val colors: AppExtraColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalAppExtraColors.current
+}

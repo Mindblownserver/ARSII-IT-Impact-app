@@ -44,12 +44,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.kharrat.blooddonationapp.ui.theme.AppThemeExtras
 
 @Composable
 fun LoginScreen(
     onLoginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val extras = AppThemeExtras.colors
     var email by remember { mutableStateOf("caretaker@forest.com") }
     var password by remember { mutableStateOf("password") }
 
@@ -59,8 +61,8 @@ fun LoginScreen(
             .background(
                 brush = Brush.verticalGradient(
                     listOf(
-                        Color(0xFFEAF4E8),
-                        Color(0xFFF7F8F7)
+                        extras.loginGradientStart,
+                        extras.loginGradientEnd
                     )
                 )
             )
@@ -72,8 +74,8 @@ fun LoginScreen(
                 .background(
                     brush = Brush.radialGradient(
                         listOf(
-                            Color(0xAA9CC783),
-                            Color.Transparent
+                            extras.loginOrbColor,
+                            extras.loginOrbFade
                         )
                     ),
                     shape = CircleShape
@@ -92,7 +94,7 @@ fun LoginScreen(
 
             Card(
                 shape = RoundedCornerShape(28.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xF8FFFFFF))
+                colors = CardDefaults.cardColors(containerColor = extras.loginCardContainer)
             ) {
                 Column(
                     modifier = Modifier
