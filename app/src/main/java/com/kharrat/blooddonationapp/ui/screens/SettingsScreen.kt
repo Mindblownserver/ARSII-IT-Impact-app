@@ -55,7 +55,6 @@ fun SettingsScreen(
     modifier: Modifier = Modifier
 ) {
     var displayName by rememberSaveable { mutableStateOf("Elena Greenwood") }
-    var role by rememberSaveable { mutableStateOf("Chief Botanical Archivist") }
     var password by rememberSaveable { mutableStateOf("password") }
     var showEditProfileDialog by remember { mutableStateOf(false) }
     var showChangePasswordDialog by remember { mutableStateOf(false) }
@@ -110,11 +109,6 @@ fun SettingsScreen(
                         text = displayName,
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = role,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -273,11 +267,9 @@ fun SettingsScreen(
     if (showEditProfileDialog) {
         EditProfileDialog(
             initialName = displayName,
-            initialRole = role,
             onDismiss = { showEditProfileDialog = false },
-            onConfirm = { name, updatedRole ->
+            onConfirm = { name ->
                 displayName = name
-                role = updatedRole
                 statusMessage = "Profile updated"
                 showEditProfileDialog = false
             }
@@ -305,7 +297,6 @@ fun SettingsScreen(
                 Button(
                     onClick = {
                         displayName = "Archived User"
-                        role = "No active profile"
                         onNotificationsEnabledChange(false)
                         onDarkThemeEnabledChange(false)
                         statusMessage = "Account deleted locally and preferences reset"
@@ -419,12 +410,10 @@ private fun ThemeChoiceChip(
 @Composable
 private fun EditProfileDialog(
     initialName: String,
-    initialRole: String,
     onDismiss: () -> Unit,
-    onConfirm: (String, String) -> Unit
+    onConfirm: (String) -> Unit
 ) {
     var name by remember { mutableStateOf(initialName) }
-    var role by remember { mutableStateOf(initialRole) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -437,16 +426,11 @@ private fun EditProfileDialog(
                     label = { Text("Name") },
                     singleLine = true
                 )
-                OutlinedTextField(
-                    value = role,
-                    onValueChange = { role = it },
-                    label = { Text("Role") },
-                    singleLine = true
-                )
+
             }
         },
         confirmButton = {
-            Button(onClick = { onConfirm(name.trim().ifEmpty { initialName }, role.trim().ifEmpty { initialRole }) }) {
+            Button(onClick = { onConfirm(name.trim().ifEmpty { initialName }) }) {
                 Text(text = "Save")
             }
         },

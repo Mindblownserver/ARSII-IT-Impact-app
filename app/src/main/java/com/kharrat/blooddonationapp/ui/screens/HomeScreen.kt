@@ -45,7 +45,6 @@ private data class DonationEntry(
     val date: String,
     val hospital: String,
     val address: String,
-    val amount: String,
     val tint: Color
 )
 
@@ -71,9 +70,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     )
 
     val donations = listOf(
-        DonationEntry("BLOOD", "Oct 24, 2023", "City General Hospital", "123 Health St, Metropolitan", "450ml", Color(0xFFFFF1F1)),
-        DonationEntry("PLASMA", "Sep 12, 2023", "Central Wellness Center", "455 Medical Plaza, Uptown", "600ml", Color(0xFFFFF8EA)),
-        DonationEntry("BLOOD", "Aug 05, 2023", "Red Cross HQ", "78 Unity Square, Downtown", "450ml", Color(0xFFFFF1F1))
+        DonationEntry("BLOOD", "Oct 24, 2023", "City General Hospital", "123 Health St, Metropolitan", Color(0xFFFFF1F1)),
+        DonationEntry("PLASMA", "Sep 12, 2023", "Central Wellness Center", "455 Medical Plaza, Uptown", Color(0xFFFFF8EA)),
+        DonationEntry("BLOOD", "Aug 05, 2023", "Red Cross HQ", "78 Unity Square, Downtown", Color(0xFFFFF1F1))
     )
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -310,17 +309,6 @@ private fun DonationCard(entry: DonationEntry) {
                             color = MaterialTheme.colorScheme.onSurface
                         )
                     }
-                }
-                Card(
-                    shape = RoundedCornerShape(999.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                ) {
-                    Text(
-                        text = entry.amount,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-                    )
                 }
             }
 
