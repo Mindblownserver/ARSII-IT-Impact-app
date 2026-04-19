@@ -18,8 +18,8 @@ object VerdantLedgerColors {
 
     val Secondary = Color(0xFF7D8F69)
     val SecondaryContainer = Color(0xFFE2E9D7)
-    val Tertiary = Color(0xFFB14E89)
-    val TertiaryContainer = Color(0xFFF0D6E5)
+    val Tertiary = Color(0xFF4A8E52)
+    val TertiaryContainer = Color(0xFFDCEFD9)
 
     val OnSurface = Color(0xFF162014)
     val OnSurfaceMuted = Color(0xFF586354)

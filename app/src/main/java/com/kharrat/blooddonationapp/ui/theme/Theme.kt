@@ -7,8 +7,11 @@ import androidx.compose.runtime.Composable
 
 private val DarkColorScheme = darkColorScheme(
     primary = VerdantLedgerColors.Primary,
+    primaryContainer = VerdantLedgerColors.PrimaryContainer,
     secondary = VerdantLedgerColors.Secondary,
+    secondaryContainer = VerdantLedgerColors.SecondaryContainer,
     tertiary = VerdantLedgerColors.Tertiary,
+    tertiaryContainer = VerdantLedgerColors.TertiaryContainer,
     background = VerdantLedgerColors.Background,
     surface = VerdantLedgerColors.Surface,
     surfaceVariant = VerdantLedgerColors.SurfaceContainerHigh,
@@ -16,15 +19,25 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainerHigh = VerdantLedgerColors.SurfaceContainerHigh,
     surfaceContainerLow = VerdantLedgerColors.SurfaceContainerLow,
     onPrimary = VerdantLedgerColors.OnPrimary,
+    onPrimaryContainer = VerdantLedgerColors.OnBackground,
+    onSecondary = VerdantLedgerColors.OnSecondary,
+    onSecondaryContainer = VerdantLedgerColors.OnBackground,
+    onTertiary = VerdantLedgerColors.OnSecondary,
+    onTertiaryContainer = VerdantLedgerColors.OnBackground,
+    onBackground = VerdantLedgerColors.OnBackground,
     onSurface = VerdantLedgerColors.OnSurface,
     outlineVariant = VerdantLedgerColors.OutlineVariant,
-    error = VerdantLedgerColors.Error
+    error = VerdantLedgerColors.Error,
+    surfaceTint = VerdantLedgerColors.Primary
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = VerdantLedgerColors.Primary,
+    primaryContainer = VerdantLedgerColors.PrimaryContainer,
     secondary = VerdantLedgerColors.Secondary,
+    secondaryContainer = VerdantLedgerColors.SecondaryContainer,
     tertiary = VerdantLedgerColors.Tertiary,
+    tertiaryContainer = VerdantLedgerColors.TertiaryContainer,
     background = VerdantLedgerColors.Background,
     surface = VerdantLedgerColors.Surface,
     surfaceVariant = VerdantLedgerColors.SurfaceContainerHigh,
@@ -32,9 +45,16 @@ private val LightColorScheme = lightColorScheme(
     surfaceContainerHigh = VerdantLedgerColors.SurfaceContainerHigh,
     surfaceContainerLow = VerdantLedgerColors.SurfaceContainerLow,
     onPrimary = VerdantLedgerColors.OnPrimary,
+    onPrimaryContainer = VerdantLedgerColors.OnBackground,
+    onSecondary = VerdantLedgerColors.OnSecondary,
+    onSecondaryContainer = VerdantLedgerColors.OnBackground,
+    onTertiary = VerdantLedgerColors.OnSecondary,
+    onTertiaryContainer = VerdantLedgerColors.OnBackground,
+    onBackground = VerdantLedgerColors.OnBackground,
     onSurface = VerdantLedgerColors.OnSurface,
     outlineVariant = VerdantLedgerColors.OutlineVariant,
-    error = VerdantLedgerColors.Error
+    error = VerdantLedgerColors.Error,
+    surfaceTint = VerdantLedgerColors.Primary
 )
 
 @Composable

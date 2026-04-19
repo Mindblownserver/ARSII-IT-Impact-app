@@ -84,55 +84,9 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 18.dp, vertical = 20.dp)
+                .padding(horizontal = 18.dp, vertical = 20.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            Card(
-                shape = RoundedCornerShape(28.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xF4FFFFFF)),
-                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Rounded.VolunteerActivism,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.tertiary
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Tabaralii",
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(14.dp))
-                    Text(
-                        text = "Nurture your virtual forest with every life-saving drop.",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Text(
-                        text = "Donate blood, grow life.",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.tertiary
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        ForestAvatar(Color(0xFFA6DB8E), 0.dp)
-                        ForestAvatar(Color(0xFFC4E8AF), (-10).dp)
-                        ForestAvatar(Color(0xFFF2D5E3), (-20).dp)
-                        Text(
-                            text = "JOINED BY 12K+ CARETAKERS",
-                            style = MaterialTheme.typography.labelMedium,
-                            modifier = Modifier.padding(start = 6.dp),
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
-                        )
-                    }
-                }
-            }
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -216,30 +170,7 @@ fun LoginScreen(
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "New to the archive?",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
-                        )
-                        TextButton(onClick = {}) {
-                            Text(text = "Sign Up", style = MaterialTheme.typography.bodyMedium)
-                        }
-                    }
 
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        FooterPill(icon = Icons.Rounded.Lock, label = "SECURE ACCESS")
-                        FooterPill(icon = Icons.Rounded.Public, label = "CARBON NEUTRAL")
-                        FooterPill(icon = Icons.Rounded.Eco, label = "GREEN IMPACT")
-                    }
                 }
             }
         }
